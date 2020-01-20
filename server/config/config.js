@@ -14,3 +14,6 @@ process.env.SEED = process.env.SEED || 'este-es-el-seed-desarrollo';
 let urlDB = process.env.NODE_ENV === 'dev' ? 'mongodb://localhost:27017/cafe' : process.env.MONGO_URI;
 
 process.env.URLDB = urlDB;
+
+// Google client ID
+process.env.CLIENT_ID = process.env.CLIENT_ID || 'client_id';
