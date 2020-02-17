@@ -18,14 +18,17 @@ let verificaToken = (req, res, next) => {
 
         // decoded es el payload del token
         req.usuario = decoded.usuario;
+        // pasa el control a la siguiente función de middleware
         next();
     });
 };
 
+// Verificar Admin Role
 let verificaAdmin_Role = (req, res, next) => {
     let usuario = req.usuario;
 
     if (usuario.role === 'ADMIN_ROLE') {
+        // pasa el control a la siguiente función de middleware
         next();
     } else {
         return res.json({
@@ -37,7 +40,31 @@ let verificaAdmin_Role = (req, res, next) => {
     }
 };
 
+// Verificar token para imagen
+let verificaTokenImg = (req, res, next) => {
+    let token = req.query.token;
+
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+        console.info(err);
+        console.log(decoded);
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'Token no valido'
+                }
+            });
+        }
+
+        // decoded es el payload del token
+        req.usuario = decoded.usuario;
+        // pasa el control a la siguiente función de middleware
+        next();
+    });
+};
+
 module.exports = {
     verificaToken,
-    verificaAdmin_Role
+    verificaAdmin_Role,
+    verificaTokenImg
 }
